@@ -1,4 +1,4 @@
-Live demo: ...
+Live demo: [https://statisticsof-covid-with-react-js.vercel.app/](https://statisticsof-covid-with-react-js.vercel.app/)
 
 # Getting Started with Create React App
 
