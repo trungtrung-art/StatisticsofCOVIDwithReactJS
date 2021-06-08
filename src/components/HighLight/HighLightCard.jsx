@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     CardContent,
@@ -6,6 +6,7 @@ import {
     Typography,
     makeStyles,
 } from "@material-ui/core";
+import EmptyData from "../EmptyData";
 
 const useStyles = makeStyles({
     wrapper: (props) => {
@@ -26,8 +27,9 @@ const useStyles = makeStyles({
 });
 
 const HighLightCard = ({ title, count, type }) => {
-    const styles = useStyles({ type });
+    console.log(count);
 
+    const styles = useStyles({ type });
     return (
         <Grid item sm={4} xs={12}>
             <Card className={styles.wrapper}>
@@ -44,7 +46,11 @@ const HighLightCard = ({ title, count, type }) => {
                         variant="body2"
                         className={styles.count}
                     >
-                        {count}
+                        {count == undefined ? (
+                            <EmptyData />
+                        ) : (
+                            <div>{count}</div>
+                        )}
                     </Typography>
                 </CardContent>
             </Card>

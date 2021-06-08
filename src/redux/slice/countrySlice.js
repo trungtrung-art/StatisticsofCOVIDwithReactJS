@@ -7,7 +7,6 @@ const initialState = {
     data: [],
     selectedCountryId: "vn",
     error: "",
-    loading: false,
 };
 
 export const fetchCountry = createAsyncThunk(
@@ -23,7 +22,6 @@ const countrySlice = createSlice({
     initialState,
     reducers: {
         setSelectedCountryId(state, action) {
-            console.log(state.selectedCountryId);
             state.selectedCountryId = action.payload;
             return state;
         },
@@ -31,8 +29,7 @@ const countrySlice = createSlice({
     extraReducers: {
         // Add reducers for additional action types here, and handle loading state as needed
         [fetchCountry.fulfilled]: (state, action) => {
-            state.data = [...action.payload];
-            // const country = sortBy(state, "Country");
+            state.data = sortBy(action.payload, "Country");
             return state;
         },
         [fetchCountry.rejected]: (state, action) => {

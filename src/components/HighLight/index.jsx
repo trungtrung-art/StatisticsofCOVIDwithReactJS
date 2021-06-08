@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Card, CardContent, Grid, Typography } from "@material-ui/core";
 import HighLightCard from "./HighLightCard";
 
-const HighLight = ({ report }) => {
+const HighLight = ({ report, loading }) => {
     const data = report && report.length ? report[report.length - 1] : [];
 
     const summary = [

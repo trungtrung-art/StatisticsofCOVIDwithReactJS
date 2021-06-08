@@ -4,6 +4,7 @@ import { getReportCountry } from "../../apis";
 const initialState = {
     data: [],
     error: "",
+    loading: true,
 };
 
 export const fetchReport = createAsyncThunk(
@@ -20,14 +21,19 @@ const reportSlice = createSlice({
     reducers: {},
     extraReducers: {
         // Add reducers for additional action types here, and handle loading state as needed
+        [fetchReport.pending]: (state, action) => {
+            state.loading = true;
+            return state;
+        },
         [fetchReport.fulfilled]: (state, action) => {
             action.payload.pop();
             state.data = [...action.payload];
-
+            state.loading = false;
             return state;
         },
         [fetchReport.rejected]: (state, action) => {
             state.error = action.error.message;
+            state.loading = false;
             return state;
         },
     },

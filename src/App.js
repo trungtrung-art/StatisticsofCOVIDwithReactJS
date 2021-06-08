@@ -11,6 +11,9 @@ import "@fontsource/roboto";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountry, setSelectedCountryId } from "./redux/slice/countrySlice";
 import { fetchReport } from "./redux/slice/reportSlice";
+import Loading from "./components/Loading";
+
+import "../src/App.css";
 
 moment.locale("vi");
 
@@ -23,6 +26,7 @@ function App() {
     );
 
     const report = useSelector((state) => state.report.data);
+    const loading = useSelector((state) => state.report.loading);
 
     useEffect(() => {
         dispatch(fetchCountry());
@@ -39,16 +43,13 @@ function App() {
             );
 
             dispatch(fetchReport(Slug));
-
-            // getReportCountry(Slug).then((res) => {
-            //     res.data.pop();
-            //     setReport(res.data);
-            // });
         }
     }, [country, selectedCountryId]);
 
     return (
         <Container className="App">
+            {loading && <Loading />}
+
             <Typography variant="h2" component="h2">
                 Số liệu COVID-19
             </Typography>
@@ -58,7 +59,7 @@ function App() {
                 handleOnChange={handleOnChange}
                 value={selectedCountryId}
             />
-            <HighLight report={report} />
+            <HighLight report={report} loading={loading} />
             <Summary report={report} selectedCountryId={selectedCountryId} />
         </Container>
     );
