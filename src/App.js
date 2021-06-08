@@ -8,39 +8,45 @@ import HighLight from "./components/HighLight";
 import Summary from "./components/Summary";
 import "moment/locale/vi";
 import "@fontsource/roboto";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCountry, setSelectedCountryId } from "./redux/slice/countrySlice";
+import { fetchReport } from "./redux/slice/reportSlice";
 
 moment.locale("vi");
 
 function App() {
-    const [country, setCountry] = useState([]);
-    const [selectedCountryId, setSelectedCountryId] = useState("");
-    const [report, setReport] = useState([]);
+    const dispatch = useDispatch();
+
+    const country = useSelector((state) => state.country.data);
+    const selectedCountryId = useSelector(
+        (state) => state.country.selectedCountryId
+    );
+
+    const report = useSelector((state) => state.report.data);
 
     useEffect(() => {
-        getCountry().then((res) => {
-            const countries = sortBy(res.data, "Country");
-            setCountry(countries);
-            setSelectedCountryId("vn");
-        });
+        dispatch(fetchCountry());
     }, []);
 
     const handleOnChange = useCallback((e) => {
-        console.log(e.target.value);
-        setSelectedCountryId(e.target.value);
+        dispatch(setSelectedCountryId(e.target.value));
     });
 
     useEffect(() => {
-        if (selectedCountryId) {
+        if (selectedCountryId && country && country.length) {
             const { Slug } = country.find(
                 (count) => count.ISO2 === selectedCountryId.toUpperCase()
             );
 
-            getReportCountry(Slug).then((res) => {
-                res.data.pop();
-                setReport(res.data);
-            });
+            dispatch(fetchReport(Slug));
+
+            // getReportCountry(Slug).then((res) => {
+            //     res.data.pop();
+            //     setReport(res.data);
+            // });
         }
     }, [country, selectedCountryId]);
+
     return (
         <Container className="App">
             <Typography variant="h2" component="h2">
